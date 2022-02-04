@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=
+    , initial-scale=1.0"
+    />
+    <title>Document</title>
+  </head>
+
+  <style>
+    section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 5px;
+    }
+    article {
+      border-style: solid;
+    }
+    h2 {
+      margin: 1.5rem;
+    }
+
+    p {
+      margin: 1.5rem;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+  <body>
+    <section>
+      <template>
+        <article>
+          <img src="" alt="" class="billedeurl" />
+          <h2 class="fornavn"></h2>
+          <h2 class="efternavn"></h2>
+          <p class="email"></p>
+        </article>
+      </template>
+    </section>
+  </body>
+  <script>
+    const url = "https://tema7-85e7.restdb.io/rest/medlemmer?";
+    // settings, test data, tag link, husk at fjerne max
+    // key = database, API keys, manage dem --> Selve nøglen
+
+    const options = {
+      headers: {
+        "x-apikey": "61fcf7e43f215f310a37be53",
+      },
+    };
+
+    async function henData() {
+      const resspons = await fetch(url, options);
+      const json = await resspons.json();
+      vis(json);
+    }
+
+    function vis(json) {
+      console.log(json);
+    }
+
+    henData();
+
+    const main = document.querySelector("section");
+    const template = document.querySelector("template").content;
+
+    function vis(json) {
+      console.log(json);
+      json.forEach((medlemmer) => {
+        const klon = template.cloneNode(true);
+
+        klon.querySelector(".billedeurl").src =
+          "faces/" + medlemmer.profilbillede + ".jpg";
+        klon.querySelector(".fornavn").textContent = medlemmer.fornavn;
+        klon.querySelector(".efternavn").textContent = medlemmer.efternavn;
+        klon.querySelector(".email").textContent = medlemmer.email;
+        main.appendChild(klon);
+      });
+    }
+  </script>
+</html>
